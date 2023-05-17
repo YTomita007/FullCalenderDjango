@@ -1,0 +1,2 @@
+# FullCalenderDjango
+Djangoを基盤にしてFullCalenderを実装Axiosで連携
