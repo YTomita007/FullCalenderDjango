@@ -4,6 +4,7 @@ RUN mkdir /code
 WORKDIR /code
 ADD requirements.txt /code/
 RUN pip install --upgrade pip
+RUN pip install Pillow
 RUN pip3 install -r requirements.txt
 ADD . /code/
 EXPOSE 9002

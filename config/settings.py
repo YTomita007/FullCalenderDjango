@@ -130,3 +130,9 @@ STATIC_ROOT = f'/var/www/{BASE_DIR.name}/static'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 画像を保存する先の指定
+IMAGE_ROOT = f'/var/www/{BASE_DIR.name}/images'
+
+# 画像をdjango側で読み込むための設定
+IMAGE_URL = '/images/'

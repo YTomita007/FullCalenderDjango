@@ -1,0 +1,41 @@
+<html>
+
+    <head>
+        <meta charset='utf-8' />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css">
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+    </head>
+
+    <body>
+        <div id='event'>
+            <form>
+                <label for="namelabel">件名</label>
+                <input type="text" name="name" id="namelabel" placeholder="例）東京出張" value="{{ title }}">
+                <label for="maillabel">メールアドレス</label>
+                <input class="inputs" type="email" name="email" id="maillabel" placeholder="○○○.jp">
+                <label for="ikenlabel">ご意見</label>
+                <textarea id="iken"></textarea>
+                {% block contet %}
+                    <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit">送信</button>
+                    </form>
+                {% endblock %}
+                <div class="selector">
+                    <input type="submit" value="削除する">
+                    <input type="submit" value="更新する">
+                </div>
+            </form>
+            <a href="/sc">カレンダーへ戻る</a>
+        </div>
+
+
+        <p>{{ id }}</p>
+        <p>{{ title }}</p>
+
+        {% load static %}
+        <script src="{% static 'app.js' %}"></script>
+    </body>
+
+</html>

@@ -1,6 +1,7 @@
 import json
 import time
 from .models import Event
+from django.db import models as django_models  
 from .forms import CalendarForm, EventForm
 from django.http import Http404
 from django.shortcuts import render
@@ -8,6 +9,8 @@ from django.template import loader
 from django.http import HttpResponse
 from django.middleware.csrf import get_token
 from django.http import JsonResponse
+from django.views.generic.edit import CreateView
+from .forms import ImageUploadForm
 
 def index(request):
     """
@@ -18,6 +21,27 @@ def index(request):
 
     template = loader.get_template("index.html")
     return HttpResponse(template.render())
+
+def get_event(request, parameter):
+
+    try:
+        event = Event.objects.get(pk=parameter)
+
+    except Event.DoesNotExist:
+        return JsonResponse(
+            data={},
+            status=404
+        )
+
+    event = {
+        "id": event.id,
+        "title": event.event_name,
+        "start": event.start_date,
+        "end": event.end_date,
+    }
+
+    template = loader.get_template("event.html")
+    return HttpResponse(template.render(event))
 
 def get_events(request):
     """
@@ -67,9 +91,6 @@ def get_events(request):
     return JsonResponse(list, safe=False)
 
 def add_event(request):
-    """
-    イベント登録
-    """
 
     if request.method == "GET":
         # GETは対応しない
@@ -156,8 +177,6 @@ def delete_event(request, _id):
         # GETは対応しない
         raise Http404()
 
-    print("🔥🔥🔥")
-
     # 削除処理
     event = Event(
         id=_id,
@@ -165,3 +184,18 @@ def delete_event(request, _id):
     event.delete()
 
     return HttpResponse("")
+
+# 独自の変換関数    
+def encode_myway(obj):
+    if isinstance(obj, django_models.Model):
+        return obj.encode()    # models.py のモデルに encode() メソッドを追加定義すること
+        # encode という名前は適当に付けました
+    # elif isinstance(obj, QuerySet):
+    #     return list(obj)    # 空の QuerySet は list 化する
+    else:
+        raise TypeError(repr(obj) + " is not JSON serializable")
+    
+class ImageUploadView(CreateView):
+    template_name = "nippo/image-upload.html"
+    form_class = ImageUploadForm
+    success_url = "/"

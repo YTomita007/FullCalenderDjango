@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 body {
     font-family: serif;
     font-size: 16px;
@@ -74,4 +76,16 @@ body {
 .modal-body {
     padding: 10px 20px;
     color: black;
+}
+#event{
+    text-align: center;
+}
+form {
+    margin: 0 auto;
+    width: 250px;
+    border: solid 1px black;
+}
+
+label {
+    display: block;
 }

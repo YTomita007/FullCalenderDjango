@@ -59,38 +59,55 @@ document.addEventListener('DOMContentLoaded', function () {
         },
 
         eventClick: function(info) {
-            var eventName = prompt("イベントを修正してください");
+            axios
+                .get("/sc/show/" + info.event.id, {
+                    id: info.event.id,
+                    start_date: info.event.start.valueOf(),
+                    end_date: info.event.end.valueOf(),
+                    event_name: info.event.eventName,
+                })
+                .then(() => {
+                    const link = "show/" + info.event.id;
+                    location.replace(link);
+                })
+                .catch(() => {
+                    alert("詳細取得に失敗しました");
+                });
+        }
 
-            console.log("🍭");
+        // eventClick: function(info) {
+        //     var eventName = prompt("イベントを修正してください");
 
-            if(eventName){
-                axios
-                    .post("/sc/edit/", {
-                        id: info.event.id,
-                        start_date: info.event.start.valueOf(),
-                        end_date: info.event.end.valueOf(),
-                        event_name: eventName,
-                    })
-                    .then(() => {
-                        location.reload();
-                    })
-                    .catch(() => {
-                        alert("更新に失敗しました");
-                    });
-            } else {
-                axios
-                    .delete("/sc/delete/" + info.event.id, {
-                        id: info.event.id,
-                    })
-                    .then(() => {
-                        location.reload();
-                        alert("予定を削除しました");
-                    })
-                    .catch(() => {
-                        alert("削除に失敗しました");
-                    });
-            }
-        },
+        //     console.log("🍭");
+
+        //     if(eventName){
+        //         axios
+        //             .post("/sc/edit/", {
+        //                 id: info.event.id,
+        //                 start_date: info.event.start.valueOf(),
+        //                 end_date: info.event.end.valueOf(),
+        //                 event_name: eventName,
+        //             })
+        //             .then(() => {
+        //                 location.reload();
+        //             })
+        //             .catch(() => {
+        //                 alert("更新に失敗しました");
+        //             });
+        //     } else {
+        //         axios
+        //             .delete("/sc/delete/" + info.event.id, {
+        //                 id: info.event.id,
+        //             })
+        //             .then(() => {
+        //                 location.reload();
+        //                 alert("予定を削除しました");
+        //             })
+        //             .catch(() => {
+        //                 alert("削除に失敗しました");
+        //             });
+        //     }
+        // },
     });
 
     calendar.render();
